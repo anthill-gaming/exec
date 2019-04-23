@@ -5,7 +5,7 @@ from anthill.framework.auth.handlers import UserHandlerMixin
 class SessionHandler(UserHandlerMixin, JsonRPCSessionHandler):
     def __init__(self, application, request, **kwargs):
         super().__init__(self, application, request, **kwargs)
-        self.js_session = None
+        self.js_session = JSSession(self)
 
     def check_origin(self, origin):
         return True
@@ -26,3 +26,12 @@ class SessionHandler(UserHandlerMixin, JsonRPCSessionHandler):
     async def call(self, method_name, arguments):
         # TODO: make request to js_session
         pass
+
+
+class JSSessionError(Exception):
+    pass
+
+
+class JSSession:
+    def __init__(self, handler: SessionHandler):
+        self.handler = handler
