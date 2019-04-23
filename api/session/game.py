@@ -3,4 +3,4 @@ from functools import partial
 from . import session_api
 
 
-social_request = partial(connector.internal_request, 'social')
+game_request = partial(connector.internal_request, 'game_master')
