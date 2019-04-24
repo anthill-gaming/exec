@@ -1,13 +1,13 @@
 from anthill.platform.api.internal import connector
 from anthill.framework.utils.ip import get_ip
 from functools import partial
-from . import session_api
+from .base import session_api
 
 
 store_request = partial(connector.internal_request, 'store')
 
 
-@session_api
+@session_api()
 async def create_order(item_id, store_id, currency_id, count, payment_backend, session=None):
     user = session.handler.current_user
     payment_kwargs = {

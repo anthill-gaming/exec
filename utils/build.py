@@ -1,6 +1,7 @@
-from v8py import Context, Script, JSException
+from v8py import Context, Script, JSException, new
 from exec.api.session import session_api
 from exec.utils import stdlib
+from exec.utils.session import JSSession, JSSessionError
 import logging
 import os
 
@@ -9,10 +10,11 @@ logger = logging.getLogger('anthill.application')
 
 
 class JSBuildError(Exception):
-    def __init__(self, code, message, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.code = code
-        self.message = message
+    pass
+
+
+class ClassDoesNotExist(Exception):
+    pass
 
 
 class JSBuild:
@@ -25,7 +27,7 @@ class JSBuild:
             script = Script(source=stdlib.source, filename=stdlib.name)
             self.context.eval(script)
         except Exception as e:
-            raise JSBuildError(500, 'Error while compiling stdlib.js') from e
+            raise JSBuildError('Error while compiling stdlib.js') from e
 
         if source_path:
             for file_name in os.listdir(source_path):
@@ -39,7 +41,7 @@ class JSBuild:
                         script = Script(source=f.read(), filename=file_name)
                         self.context.eval(script)
                 except Exception as e:
-                    raise JSBuildError(500, 'Error while compiling.') from e
+                    raise JSBuildError('Error while compiling') from e
 
         session_api.expose(self.context)
 
@@ -48,7 +50,21 @@ class JSBuild:
         try:
             self.context.eval(script)
         except JSException as e:
-            raise JSBuildError(500, 'Error while adding source.') from e
+            raise JSBuildError('Error while adding source') from e
 
-    def create_session(self):
-        pass
+    def create_session(self, handler, class_name, arguments, *args):
+        if class_name not in self.context.glob:
+            raise ClassDoesNotExist
+
+        clazz = getattr(self.context.glob, class_name)
+
+        if not getattr(clazz, 'allow_session', False):
+            raise ClassDoesNotExist
+
+        try:
+            instance = new(clazz, arguments, args)
+        except (TypeError, JSException) as e:
+            raise JSSessionError('Failed to build session') from e
+
+        js_session = JSSession(handler, self, instance, self.promise_type)
+        return js_session
