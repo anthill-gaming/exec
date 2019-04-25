@@ -4,7 +4,8 @@ from functools import partial
 from .base import session_api
 
 
-store_request = partial(connector.internal_request, 'store')
+def store_request():
+    return partial(connector.internal_request, 'store')
 
 
 @session_api()
@@ -22,7 +23,7 @@ async def create_order(item_id, store_id, currency_id, count, payment_backend, s
         'payment_kwargs': payment_kwargs,
         'store_id': store_id
     }
-    order_data = await store_request('create_order', **kwargs)
+    order_data = await store_request()('create_order', **kwargs)
     return order_data
 
 

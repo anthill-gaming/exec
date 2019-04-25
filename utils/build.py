@@ -52,7 +52,7 @@ class JSBuild:
         except JSException as e:
             raise JSBuildError('Error while adding source') from e
 
-    def create_session(self, handler, class_name, arguments, *args):
+    def create_session(self, handler, class_name, args, **env):
         if class_name not in self.context.glob:
             raise ClassDoesNotExist
 
@@ -62,9 +62,9 @@ class JSBuild:
             raise ClassDoesNotExist
 
         try:
-            instance = new(clazz, arguments, args)
+            instance = new(clazz, args, env)
         except (TypeError, JSException) as e:
             raise JSSessionError('Failed to build session') from e
 
-        js_session = JSSession(handler, self, instance, self.promise_type)
+        js_session = JSSession(handler, self, instance, self.promise_type, **env)
         return js_session

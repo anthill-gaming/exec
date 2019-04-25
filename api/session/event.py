@@ -3,4 +3,5 @@ from functools import partial
 from .base import session_api
 
 
-event_request = partial(connector.internal_request, 'event')
+def event_request():
+    return partial(connector.internal_request, 'event')

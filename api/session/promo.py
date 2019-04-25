@@ -3,4 +3,5 @@ from functools import partial
 from .base import session_api
 
 
-promo_request = partial(connector.internal_request, 'promo')
+def promo_request():
+    return partial(connector.internal_request, 'promo')

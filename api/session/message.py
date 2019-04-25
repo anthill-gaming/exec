@@ -3,4 +3,5 @@ from functools import partial
 from .base import session_api
 
 
-message_request = partial(connector.internal_request, 'message')
+def message_request():
+    return partial(connector.internal_request, 'message')

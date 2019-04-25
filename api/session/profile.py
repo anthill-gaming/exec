@@ -3,4 +3,5 @@ from functools import partial
 from .base import session_api
 
 
-profile_request = partial(connector.internal_request, 'profile')
+def profile_request():
+    return partial(connector.internal_request, 'profile')

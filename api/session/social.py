@@ -3,4 +3,5 @@ from functools import partial
 from .base import session_api
 
 
-social_request = partial(connector.internal_request, 'social')
+def social_request():
+    return partial(connector.internal_request, 'social')

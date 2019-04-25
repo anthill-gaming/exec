@@ -29,11 +29,12 @@ class JSSessionCallTimeoutError(Exception):
 class JSSession:
     call_timeout = 10
 
-    def __init__(self, handler, build, instance, promise_type):
+    def __init__(self, handler, build, instance, promise_type, **env):
         self.handler = handler
         self.build = build
         self.instance = instance
         self.promise_type = promise_type
+        self.env = env
 
     async def configure(self):
         """Additional configuration for javascript session."""
@@ -47,7 +48,7 @@ class JSSession:
         """Close javascript session."""
         raise NotImplementedError
 
-    async def call(self, method_name, arguments):
+    async def call(self, method_name, args):
         """Call javascript session api method."""
         context = self.build.context
 
@@ -61,7 +62,7 @@ class JSSession:
             # raise JSExecutionError(message=str(e)) from e
             raise
         except Exception as e:
-            raise JSExecutionError(message=str(e)) from e
+            raise JSExecutionError from e
 
         if future.done():
             return future.result()
