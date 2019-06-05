@@ -9,5 +9,6 @@ from . import (
     promo,
     social,
     store,
+    market,
     web,
 )
