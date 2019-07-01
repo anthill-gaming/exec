@@ -1,3 +1,4 @@
 Exec
 =============================================
-Execute custom javascript code on a server side
+Execute custom javascript code on a server side.
+Currently under heavy development.
