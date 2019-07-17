@@ -1,9 +1,9 @@
 from anthill.platform.handlers.jsonrpc import JsonRPCSessionHandler, jsonrpc_method
-from anthill.framework.auth.handlers import UserHandlerMixin
+from anthill.platform.handlers import UserHandlerMixin
 from exec.utils.session import JSSession, JSSessionError
 
 
-class SessionHandler(UserHandlerMixin, JsonRPCSessionHandler):
+class SessionHandler(JsonRPCSessionHandler, UserHandlerMixin):
     def __init__(self, application, request, **kwargs):
         super().__init__(self, application, request, **kwargs)
         self.js_session = None
