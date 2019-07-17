@@ -1,6 +1,6 @@
 from v8py import JSException, JSPromise, Context, new, JavaScriptTerminated
 from tornado.gen import with_timeout, TimeoutError, Future
-from exec.api.session import SessionAPIError
+from exec.api.v1.session import SessionAPIError
 from datetime import timedelta
 import logging
 

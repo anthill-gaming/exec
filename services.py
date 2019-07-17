@@ -1,5 +1,5 @@
 from anthill.platform.services import PlainService
-from exec.api.session import session_api
+from .api.v1.session import session_api
 
 
 class Service(PlainService):

@@ -4,11 +4,11 @@ from . import (
     config,
     event,
     game,
+    market,
     message,
     profile,
     promo,
     social,
     store,
-    market,
     web,
 )
